@@ -1,5 +1,6 @@
 package com.ntels.sykim.RoadAirEnvironment.util;
 
+import com.ntels.sykim.RoadAirEnvironment.model.SelectedName;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -11,8 +12,8 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class HttpUtil {
     /**
-     * 모든 측정소에 대한 데이터 요청
-     * @return 모든 측정소 내 대기환경 응답 정보
+     * 모든 측정소에 대한 대기 환경 API 요청
+     * @return 모든 측정소에 대한 API 응답
      */
     public String requestApiAll() {
         String url = "http://openAPI.seoul.go.kr:8088/73416874526b7379353661776a5369/json/RealtimeRoadsideStation/1/25";
@@ -28,11 +29,10 @@ public class HttpUtil {
     }
 
     /**
-     * 선택된 측정소에 대한 데이터 요청
-     * @param roadName 조회할 측정소 명
-     * @return 사용자 지정 측정소 내 대기환경 응답 정보
+     * 선택한 측정소에 대한 대기 환경 API 요청
+     * @return 선택한 측정소에 대한 API 응답
      */
-    public String requestApiOne(String roadName) {
+    public String requestApiOne() {
         String url = "http://openAPI.seoul.go.kr:8088/73416874526b7379353661776a5369/json/RealtimeRoadsideStation/1/25/";
         String link;
 
@@ -41,7 +41,9 @@ public class HttpUtil {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
-        link = new StringBuilder(url).append(roadName).toString();
+        link = new StringBuilder(url).append(SelectedName.selected).append("/").append(SelectedName.measureStation).toString();
+
+        System.out.println("link: " + link);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(link, HttpMethod.GET, entity, String.class);
 

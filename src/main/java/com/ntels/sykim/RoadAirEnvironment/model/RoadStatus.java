@@ -6,7 +6,7 @@ package com.ntels.sykim.RoadAirEnvironment.model;
  */
 public class RoadStatus {
     /**
-     * 도로명
+     * 측정소명
      */
     private String roadName;
     /**
@@ -33,6 +33,18 @@ public class RoadStatus {
      * 초미세먼지 농도
      */
     private double ultrafineDust;
+    /**
+     * 응답 시간
+     */
+    private String nowDate;
+
+    public String getNowDate() {
+        return nowDate;
+    }
+
+    public void setNowDate(String nowDate) {
+        this.nowDate = nowDate;
+    }
 
     public String getRoadName() {
         return roadName;
@@ -54,7 +66,7 @@ public class RoadStatus {
         return ozone;
     }
 
-    public void setOzone(float ozone) {
+    public void setOzone(double ozone) {
         this.ozone = ozone;
     }
 
@@ -62,7 +74,7 @@ public class RoadStatus {
         return nitrogenDioxide;
     }
 
-    public void setNitrogenDioxide(float nitrogenDioxide) {
+    public void setNitrogenDioxide(double nitrogenDioxide) {
         this.nitrogenDioxide = nitrogenDioxide;
     }
 
@@ -70,7 +82,7 @@ public class RoadStatus {
         return carbonMonoxide;
     }
 
-    public void setCarbonMonoxide(float carbonMonoxide) {
+    public void setCarbonMonoxide(double carbonMonoxide) {
         this.carbonMonoxide = carbonMonoxide;
     }
 
@@ -78,7 +90,7 @@ public class RoadStatus {
         return sulfurDioxide;
     }
 
-    public void setSulfurDioxide(float sulfurDioxide) {
+    public void setSulfurDioxide(double sulfurDioxide) {
         this.sulfurDioxide = sulfurDioxide;
     }
 
@@ -86,7 +98,7 @@ public class RoadStatus {
         return ultrafineDust;
     }
 
-    public void setUltrafineDust(float ultrafineDust) {
+    public void setUltrafineDust(double ultrafineDust) {
         this.ultrafineDust = ultrafineDust;
     }
 
@@ -100,6 +112,7 @@ public class RoadStatus {
                 ", carbonMonoxide=" + carbonMonoxide +
                 ", sulfurDioxide=" + sulfurDioxide +
                 ", ultrafineDust=" + ultrafineDust +
+                ", nowDate=" + nowDate +
                 '}';
     }
 }

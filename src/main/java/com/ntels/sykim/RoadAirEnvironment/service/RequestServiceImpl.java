@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import com.ntels.sykim.RoadAirEnvironment.dao.RoadMapper;
 import com.ntels.sykim.RoadAirEnvironment.model.ApiResponse;
 import com.ntels.sykim.RoadAirEnvironment.model.RoadCategory;
+import com.ntels.sykim.RoadAirEnvironment.model.RoadStatus;
 import com.ntels.sykim.RoadAirEnvironment.model.road.Row;
 import com.ntels.sykim.RoadAirEnvironment.util.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -25,10 +25,6 @@ public class RequestServiceImpl implements RequestService {
     @Autowired
     RoadMapper roadMapper;
 
-    /**
-     * 도로변 및 측정소 카테고리 저장
-     * @throws Exception
-     */
     @Override
     public void getAllStatus() throws Exception {
         Gson gson = new Gson();
@@ -43,4 +39,25 @@ public class RequestServiceImpl implements RequestService {
             roadMapper.addCategory(roadCategory);
         }
     }
+
+    @Override
+    public void getOneStatus() throws Exception {
+        Gson gson = new Gson();
+        String str = httpUtil.requestApiOne();
+        RoadStatus roadStatus = new RoadStatus();
+
+        List<Row> list = gson.fromJson(str, ApiResponse.class).getRealtimeRoadsideStation().getRow();
+
+        roadStatus.setCarbonMonoxide(list.get(0).getCO());
+        roadStatus.setDust(list.get(0).getPM10());
+        roadStatus.setNitrogenDioxide(list.get(0).getNO2());
+        roadStatus.setOzone(list.get(0).getO3());
+        roadStatus.setSulfurDioxide(list.get(0).getSO2());
+        roadStatus.setUltrafineDust(list.get(0).getPM25());
+        roadStatus.setNowDate(list.get(0).getMSRDT());
+        roadStatus.setRoadName(list.get(0).getMSRSTE_NM());
+
+        roadMapper.addStatus(roadStatus);
+    }
+
 }

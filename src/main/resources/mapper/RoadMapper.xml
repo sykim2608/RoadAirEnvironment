@@ -9,12 +9,29 @@
             FROM  ROAD_CATEGORY
     </select>
 
-    <select id="getRoadName" parameterType="String" resultType="java.util.List">
+    <select id="getRoadName" parameterType="String" resultType="String">
           SELECT
             NAME
             FROM  ROAD_CATEGORY
            WHERE
         CATEGORY  =  #{category}
+    </select>
+
+    <select id="getEnvironment" parameterType="com.ntels.sykim.RoadAirEnvironment.model.SearchParam" resultType="com.ntels.sykim.RoadAirEnvironment.model.RoadStatus">
+         SELECT
+                 ROADNAME
+                 , DUST
+                 , OZONE
+                 , NITROGENDIOXIDE
+                 , CARBONMONOXIDE
+                 , SULFURDIOXIDE
+                 , ULTRAFINEDUST
+                 , NOWDATE
+           FROM  ROAD_STATUS
+          WHERE  ROADNAME = #{RoadStatus}
+          ORDER  BY
+        NOWDATE  DESC
+          LIMIT  1
     </select>
 
     <insert id="addCategory" parameterType="com.ntels.sykim.RoadAirEnvironment.model.RoadCategory">
@@ -25,5 +42,27 @@
         VALUES  (
                 #{category}
                 , #{name} )
+    </insert>
+
+    <insert id="addStatus" parameterType="com.ntels.sykim.RoadAirEnvironment.model.RoadStatus">
+        INSERT
+          INTO  ROAD_STATUS (
+                ROADNAME
+                , DUST
+                , OZONE
+                , NITROGENDIOXIDE
+                , CARBONMONOXIDE
+                , SULFURDIOXIDE
+                , ULTRAFINEDUST
+                , NOWDATE )
+        VALUES  (
+                #{roadName}
+                , #{dust}
+                , #{ozone}
+                , #{nitrogenDioxide}
+                , #{carbonMonoxide}
+                , #{sulfurDioxide}
+                , #{ultrafineDust}
+                , #{nowDate} )
     </insert>
 </mapper>

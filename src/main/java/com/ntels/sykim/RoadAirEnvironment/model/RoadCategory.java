@@ -10,7 +10,7 @@ public class RoadCategory {
      */
     private String category;
     /**
-     * 도로명
+     * 측정소 명
      */
     private String name;
 

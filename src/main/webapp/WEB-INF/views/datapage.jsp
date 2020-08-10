@@ -30,6 +30,62 @@
     .cont_footer {text-align:center;margin-bottom:10px !important;}
     .cont_footer .btn_area {float:none !important;}
   </style>
+
+  <script>
+    $(function() {
+      $("#selectRoad").change(function() {
+        var categoryVal = $("#selectRoad option:checked").val();
+        $.ajax({
+          type:"GET",
+          url: "/changeRoad?selectRoad=" + categoryVal,
+          success: function() {
+            location.reload();
+           },
+           error: function() {
+            alert("error");
+           }
+        });
+      });
+    });
+  </script>
+  <script>
+    $(function() {
+      $("#selectMeasure").change(function() {
+        var statusVal = $("#selectMeasure option:checked").val();
+        $.ajax({
+          type: "GET",
+          url: "/changeMeasure?selectMeasure=" + statusVal,
+          success: function() {
+            location.reload();
+          },
+          error: function() {
+            alert("error");
+          }
+        });
+      });
+    });
+  </script>
+
+  <script>
+    function btnClick() {
+      var categoryVal = $("#selectRoad option:checked").val();
+      var statusVal = $("#selectMeasure option:checked").val();
+      var dataFormat = {RoadCategory : categoryVal, RoadStatus : statusVal};
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/searchEnvironment",
+        success: function(data) {          
+          $("#resultDate").append("<div class=" + '"value"'+">" + data.nowDate.substring(0,4) + "년 " + data.nowDate.substring(4,6) + "월 " + data.nowDate.substring(6,8) + "일 " + 
+            data.nowDate.substring(8,10) + "시 " + data.nowDate.substring(10,12) + "분" +  "</div>");
+        },
+        error: function() {
+          alert("error");
+        }
+      });
+    }
+  </script>
+
 </head>
 
 <body>
@@ -49,27 +105,11 @@
                   <table class="td_value">
                     <tr>
                       <td>
-                        <span class="label">IP : Port</span>
-                        <div class="value">192.168.10.1</div>
-                        <span class="colon"></span>
-                        <div class="value">8080</div>
-                      </td>
-                      <td>
-                        <span class="label">Protocol</span>
-                        <div class="value">TCP (6)</div>
-                      </td>
-                      <td>
-                        <span class="label">Domain</span>
-                        <div class="value">www.naver.com</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
                         <span class="label">도로변 구분</span>
                         <div class="select type_02 m">
-                          <select>
+                          <select class="form-control" id="selectRoad" name="selectRoad">
                             <c:forEach items="${categoryList}" var = "item">
-                              <option value="${item}">${item}</option>
+                              <option value="${item}" <c:if test ="${Road eq item}"> selected </c:if> >${item}</option>
                               
                             </c:forEach>
                           </select>
@@ -78,9 +118,13 @@
                       <td>
                         <span class="label">측정소</span>
                         <div class="select type_02 m">
-                          <select>
-                            <c:forEach items="${categoryList}" var = "item">
-                              <option value="${item}">${item}</option>
+                          <select id="selectMeasure" name="selectMeasure">
+                            <c:forEach items="${nameMap}" var = "item">
+                              <c:if test="${item.key eq Road}">
+                                <c:forEach items="${item.value}" var = "items">
+                                  <option value="${items}" <c:if test="${Measure eq items}"> selected </c:if>>${items}</option>
+                              </c:forEach>
+                              </c:if>                              
                               
                             </c:forEach>
                           </select>
@@ -95,9 +139,7 @@
         </div>
         <div class="cont_footer type_01">
           <div class="btn_area">
-            <button type="button" class="btn type_01 primary">등록</button>
-            <button type="button" class="btn type_01">목록</button>
-            <button type="button" class="btn type_01">데이터 초기화</button>
+            <button type="button" class="btn type_01 primary" id="searchBtn" onclick="btnClick()">조회</button>
           </div>
         </div>
         <div class="table type_03 detail">
@@ -108,19 +150,11 @@
                   <span>대기 환경 수치</span>
                 </th>
                 <td>
-                  <table class="td_value">
+                  <table class="td_value" >
                     <tr>
-                      <td>
-                        <span class="label">추천 확률</span>
-                        <div class="value">0.61</div>
-                      </td>
-                      <td>
-                        <span class="label">누적 발생 횟수</span>
-                        <div class="value">120</div>
-                      </td>
-                      <td>
-                        <span class="label">수행 일시</span>
-                        <div class="value">2019-10-12 09:03:16</div>
+                      <td id="resultDate">
+                        <span class="label" >수행 일시</span>
+                        <!-- <div class="value">2019-10-12 09:03:16</div> -->
                       </td>
                     </tr>
                   </table>
@@ -129,7 +163,7 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <th>
                   <span>속성 정보</span>
                 </th>
@@ -179,7 +213,7 @@
                     </div>
                   </div>
                 </td>
-              </tr> 
+              </tr> --> 
             </tbody>
           </table>
         </div>
