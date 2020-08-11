@@ -17,7 +17,7 @@
   <script src="../../scripts/atom/amcharts_3.21.2/amcharts/amcharts.js"></script>
   <script src="../../scripts/atom/amcharts_3.21.2/amcharts/serial.js"></script>
   <script src="../../scripts/atom/amcharts_3.21.2/amcharts/pie.js"></script>
-  <script src="../../scripts/atom/amcharts_run_atom.js"></script>
+  <!-- <script src="../../scripts/atom/amcharts_run_atom.js"></script> -->
   <!-- 공통작성 -->
   <script src="../../scripts/atom/ui_common.js"></script>
   <link rel="shortcut icon" type="image/x-icon" href="../../images/atom/favicon.ico">
@@ -78,6 +78,74 @@
         success: function(data) {          
           $("#resultDate").append("<div class=" + '"value"'+">" + data.nowDate.substring(0,4) + "년 " + data.nowDate.substring(4,6) + "월 " + data.nowDate.substring(6,8) + "일 " + 
             data.nowDate.substring(8,10) + "시 " + data.nowDate.substring(10,12) + "분" +  "</div>");
+
+            var $chartType_bar01 = $('.amchart_bar01');
+            var $chartType_bar01_array = [];
+            for (var i = 0; i < $chartType_bar01.length; i++) {
+              $id = 'chartTempID_bar01_' + (i + 1);
+              $chartType_bar01.eq(i).attr('id', $id);
+              $chartType_bar01_array[i] = $id;
+            }
+            // run chart
+            for (var i = 0; i < $chartType_bar01_array.length; i++) {
+              AmCharts.makeChart($chartType_bar01_array[i],
+                {
+                  "type": "serial",
+                  "theme":"theme_01",
+                  "categoryField": "category",
+                  "categoryAxis": {
+                    "parseDates": false
+                  },
+                  "graphs": [
+                    {
+                      "balloonText": "",
+                      "fillAlphas": 1,
+                      "lineThickness": 1, 
+                      "bullet": "",
+                      "colorField": "color",
+                      "lineColorField": "color",
+                      "id": "AmGraph-1",
+                      "type": "column",
+                      "valueField": "column-1"
+                    }
+                  ],
+                  "valueAxes": [
+                    {
+                      "id": "ValueAxis-1",
+                      "totalText": "[[total]]",
+                      "stackType": "regular"
+                    }
+                  ],
+                  "dataProvider": [
+                    {
+                      "color": "#13c28d",
+                      "column-1": data.dust,
+                      "category": "미세먼지 농도(㎍/㎥)"
+                    }, {
+                      "color": "#f67e7d",
+                      "column-1": data.ozone,
+                      "category": "오존 농도(ppm)"
+                    }, {
+                      "color": "#24abe0",
+                      "column-1": data.nitrogenDioxide,
+                      "category": "이산화질소 농도(ppm)"
+                    }, {
+                      "color": "#ffba66",
+                      "column-1": data.carbonMonoxide,
+                      "category": "일산화탄소 농도(ppm)"
+                    }, {
+                      "color": "#8a77c9",
+                      "column-1": data.sulfurDioxide,
+                      "category": "아황산질소 농도(ppm)"
+                    }, {
+                      "color": "#9bc95b",
+                      "column-1": data.ultrafineDust,
+                      "category": "초미세먼지 농도(㎍/㎥)"
+                    }
+                  ]
+                }
+              );
+            }
         },
         error: function() {
           alert("error");
@@ -153,67 +221,18 @@
                   <table class="td_value" >
                     <tr>
                       <td id="resultDate">
-                        <span class="label" >수행 일시</span>
+                        <span class="label" >측정 일시</span>
                         <!-- <div class="value">2019-10-12 09:03:16</div> -->
                       </td>
                     </tr>
                   </table>
                   <div class="chart_area type_03">
                     <div class="amchart_bar01"></div>
+
+
                   </div>
                 </td>
               </tr>
-              <!-- <tr>
-                <th>
-                  <span>속성 정보</span>
-                </th>
-                <td>
-                  <div class="table type_04 y_scroll link">
-                    <div class="thead">
-                      <table>
-                        <colgroup>
-                          <col>
-                          <col>
-                          <col>
-                          <col>
-                        </colgroup>
-                        <thead>
-                          <tr>
-                            <th scope="col">Title</th>
-                            <th scope="col" class="tar">최소</th>
-                            <th scope="col" class="tar">최대</th>
-                            <th scope="col" class="tar">평균</th>
-                          </tr>
-                        </thead>
-                      </table>
-                    </div>
-                    <div class="tbody">
-                      <table>
-                        <colgroup>
-                          <col>
-                          <col>
-                          <col>
-                          <col>
-                        </colgroup>
-                        <tbody>
-                          <tr>
-                            <td>Feature#01</td>
-                            <td class="tar">123,456</td>
-                            <td class="tar">123,456</td>
-                            <td class="tar">123,456</td>
-                          </tr>
-                          <tr>
-                            <td>Feature#01</td>
-                            <td class="tar">123,456</td>
-                            <td class="tar">123,456</td>
-                            <td class="tar">123,456</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </td>
-              </tr> --> 
             </tbody>
           </table>
         </div>
@@ -221,5 +240,4 @@
     </div>
   </div>
 </body>
-
 </html>

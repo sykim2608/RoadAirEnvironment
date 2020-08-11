@@ -14,7 +14,7 @@
             NAME
             FROM  ROAD_CATEGORY
            WHERE
-        CATEGORY  =  #{category}
+        CATEGORY  = #{category}
     </select>
 
     <select id="getEnvironment" parameterType="com.ntels.sykim.RoadAirEnvironment.model.SearchParam" resultType="com.ntels.sykim.RoadAirEnvironment.model.RoadStatus">
